@@ -37,6 +37,10 @@ app.listen(PORT, () => {
 //Usar lo de la carpeta public
 app.use(express.static('public'));
 
+app.get('/', (req, res) => {
+  res.redirect('/login.html'); // o res.sendFile(__dirname + '/public/login.html');
+});
+
 // Ruta para formulario de login
 app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/login.html'));
