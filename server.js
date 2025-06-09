@@ -21,6 +21,10 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.get('/', (req, res) => {
+  res.redirect('/login.html'); // o res.sendFile(__dirname + '/public/login.html');
+});
+
 app.use(cors({
   origin: process.env.URLFRONTED || 'http://localhost:3000',
   credentials: true
