@@ -22,7 +22,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
-  res.redirect('/login.html'); // o res.sendFile(__dirname + '/public/login.html');
+  res.redirect('/public/login.html'); // o res.sendFile(__dirname + '/public/login.html');
 });
 
 app.use(cors({
