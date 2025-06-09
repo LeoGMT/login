@@ -1,8 +1,21 @@
 const express = require('express');
 const session = require('express-session');
 const authRoutes = require('./routes/authRoutes');
+const mysql = require('mysql2');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const MySQLStore = require('express-mysql-session')(session);
+const db = require('./models/db.js');
+
+const mysqlPool = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+});
+
+const sessionStore = new MySQLStore({}, mysqlPool);
 
 dotenv.config();
 const app = express();
@@ -19,12 +32,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(session({
   secret: process.env.SECRETSESSION || 'clave_super_secreta',
   proxy: process.env.NODE_ENV === 'production',
+  session: sessionStore,
   resave: false,
   saveUninitialized: false,
   cookie: {
     secure: true, // true si usas HTTPS
     httpOnly: true,
-    sameSite: 'none'
+    sameSite: 'none',
+    maxAge: 1000 * 60 * 60
   }
 }));
 
